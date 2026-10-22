@@ -1,0 +1,22 @@
+CREATE TABLE `partner_bene_profile` (
+  `profile_id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK',
+  `student_id` varchar(100) NOT NULL COMMENT 'Student ID from partners (CHED, TESDA)',
+  `lrn` varchar(20) NOT NULL COMMENT 'Learner''s ID',
+  `philsys_id` varchar(20) DEFAULT NULL COMMENT 'PhilSys Card Number (PCN)',
+  `4ps_id` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Partner''s Registered 4Ps ID (Listahanan ID)',
+  `last_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Student Last Name',
+  `given_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Student First Name',
+  `ext_name` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Student Name Suffix (e.g. Jr, Sr)',
+  `middle_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Student Middle Name',
+  `sex` tinyint NOT NULL COMMENT 'Sex (0 - Male; 1 - Female)',
+  `dob` date NOT NULL COMMENT 'Date of BIrth in yyyy-mm-dd format',
+  `ppm` varchar(255) NOT NULL COMMENT 'Partner''s Program Name',
+  `yr_lvl` tinyint NOT NULL COMMENT 'Year Level (e.g. 1, 2, 3, 4, 5, 6)',
+  `father_lname` varchar(255) DEFAULT NULL COMMENT 'Father''s Last Name',
+  `father_gname` varchar(255) DEFAULT NULL COMMENT 'Father''s First Name',
+  `father_mname` varchar(255) DEFAULT NULL COMMENT 'Father''s Middle Name',
+  `mmn_lname` varchar(255) DEFAULT NULL COMMENT 'Mother''s Last Name (maiden)',
+  `mmn_gname` varchar(255) DEFAULT NULL COMMENT 'Mother''s First Name',
+  `mmn_mname` varchar(255) DEFAULT NULL COMMENT 'Mother''s Middle Name (maiden)',
+  PRIMARY KEY (`profile_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

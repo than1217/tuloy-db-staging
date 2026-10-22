@@ -1,0 +1,22 @@
+CREATE TABLE `enrollment_history_tbl` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `beneficiary_id` int DEFAULT NULL,
+  `member_id` varchar(100) NOT NULL,
+  `first_name` varchar(100) NOT NULL,
+  `middle_name` varchar(100) DEFAULT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `suffix` varchar(20) DEFAULT NULL,
+  `enrollment_year` varchar(20) NOT NULL,
+  `semester` varchar(50) NOT NULL,
+  `tertiary_school` varchar(255) DEFAULT NULL,
+  `track` varchar(50) DEFAULT NULL,
+  `verification_status` varchar(50) NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `ix_enrollment_history_tbl_beneficiary_id` (`beneficiary_id`),
+  KEY `ix_enrollment_history_tbl_id` (`id`),
+  KEY `ix_enrollment_history_tbl_member_id` (`member_id`),
+  KEY `ix_enrollment_history_tbl_last_name` (`last_name`),
+  CONSTRAINT `enrollment_history_tbl_ibfk_1` FOREIGN KEY (`beneficiary_id`) REFERENCES `tuloy_beneficiary_tbl` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

@@ -1,0 +1,21 @@
+CREATE TABLE `lib_academic_year_term` (
+  `academic_year_id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Client Status ID',
+  `name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Name',
+  `code` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Code',
+  `dt_inserted` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time Inserted',
+  `inserted_by` int unsigned DEFAULT NULL COMMENT 'Inserted By',
+  `dt_updated` datetime DEFAULT NULL COMMENT 'Date/Time Last Updated',
+  `last_updated_by` int unsigned DEFAULT NULL COMMENT 'Last Updated By',
+  `archived` tinyint unsigned NOT NULL DEFAULT '0' COMMENT 'Archived',
+  `dt_archived` datetime DEFAULT NULL COMMENT 'Date/Time Last Archived',
+  `last_archived_by` int unsigned DEFAULT NULL COMMENT 'Last Archived By',
+  `dt_restored` datetime DEFAULT NULL COMMENT 'Date/Time Last Restored',
+  `last_restored_by` int unsigned DEFAULT NULL COMMENT 'Last Restored By',
+  `dt_last_modified` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time Last Modified',
+  PRIMARY KEY (`academic_year_id`) USING BTREE,
+  KEY `inserted_by` (`inserted_by`) USING BTREE,
+  KEY `last_updated_by` (`last_updated_by`) USING BTREE,
+  KEY `last_archived_by` (`last_archived_by`) USING BTREE,
+  KEY `last_restored_by` (`last_restored_by`) USING BTREE,
+  FULLTEXT KEY `ft_lib_client_status` (`name`,`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='Client Status: Library of Beneficiary Client''s Status';

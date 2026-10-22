@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"chat.tools.terminal.autoApprove": {
+			"/^git init ; git remote add origin https://github\\.com/than1217/tuloy-db-staging\\.git ; git fetch origin ; git --no-pager log origin/main --stat -n 5$/": {
+				"approve": true,
+				"matchCommandLine": true
+			}
+		}
+	}
+}

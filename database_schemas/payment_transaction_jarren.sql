@@ -1,0 +1,23 @@
+CREATE TABLE `payment_transaction_jarren` (
+  `payment_transaction_id` int unsigned NOT NULL AUTO_INCREMENT,
+  `tuloy_journey_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `member_id` int DEFAULT NULL,
+  `academic_year_term` int NOT NULL,
+  `assistance_type` int NOT NULL,
+  `amount` decimal(12,2) NOT NULL,
+  `status` int NOT NULL COMMENT 'Payment Status',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `tuloy_payroll_type` int DEFAULT NULL,
+  `payment_mode_id` int DEFAULT NULL,
+  `sex` tinyint DEFAULT NULL,
+  `account_no` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`payment_transaction_id`),
+  UNIQUE KEY `member_id_2` (`member_id`,`academic_year_term`,`assistance_type`),
+  KEY `fk_payment_txn_journey` (`tuloy_journey_id`),
+  KEY `member_id` (`member_id`),
+  KEY `academic_year_term` (`academic_year_term`),
+  KEY `status` (`status`),
+  KEY `payment_mode_id` (`payment_mode_id`),
+  CONSTRAINT `payment_transaction_jarren_ibfk_1` FOREIGN KEY (`tuloy_journey_id`) REFERENCES `beneficiary_journey` (`tuloy_journey_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

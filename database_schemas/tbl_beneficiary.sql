@@ -1,0 +1,20 @@
+CREATE TABLE `tbl_beneficiary` (
+  `beneficiary_id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key of Beneficiary Table',
+  `household_id` int unsigned NOT NULL COMMENT 'Foreign key from Household Table. Household ID generated from Household Table',
+  `pppp_id` char(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'System generated Unique ID for the Pantawid Pamilyang Pilipino Program. Pattern: 9 digit PSGC Barangay - 5 digit Set/Group - 10 digit unix timestamp the record was inserted as beneficiary.',
+  `client_status_id` int unsigned NOT NULL COMMENT 'Foreign Key of Client Status Library',
+  `registered` tinyint(1) NOT NULL DEFAULT '2' COMMENT 'State if the beneficiary has registered. (2-False; 1-True)',
+  `d_reg` date DEFAULT NULL COMMENT 'Date of Registration',
+  `payment_mode_id` int unsigned DEFAULT NULL,
+  `ecr_act_id` int unsigned DEFAULT NULL,
+  `dt_inserted` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and Time the record was inserted',
+  `dt_updated` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date and Time the records was last updated',
+  `archived` tinyint unsigned NOT NULL DEFAULT '0' COMMENT 'State if record was archived or deleted. (0-False; 1-True)',
+  `dt_archived` datetime DEFAULT NULL COMMENT 'Date and Time the record was archived. Reference date for physical archiving of records. Set to NULL on default or after record was restored.',
+  PRIMARY KEY (`beneficiary_id`) USING BTREE,
+  KEY `client_status_id` (`client_status_id`) USING BTREE,
+  KEY `payment_mode_id` (`payment_mode_id`) USING BTREE,
+  KEY `ecr_act_id` (`ecr_act_id`) USING BTREE,
+  KEY `dt_updated` (`dt_updated`) USING BTREE,
+  KEY `idx_household_id` (`household_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='Table of Beneficiary';

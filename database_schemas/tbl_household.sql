@@ -1,0 +1,22 @@
+CREATE TABLE `tbl_household` (
+  `household_id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key of Household Table',
+  `listahanan_id` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Listahanan ID or hh_id from Listahanan Project.',
+  `address` varchar(175) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Address of Household. Unit Number/Floor/Building/House Number/Block/Lot/Street/Sitio/Purok.',
+  `barangay_id` int NOT NULL COMMENT 'Foreign Key to Barangay Library.',
+  `telephone` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Telephone Number of Household',
+  `set_grp_id` int unsigned DEFAULT NULL,
+  `ecr_act_id` int unsigned DEFAULT NULL,
+  `dt_inserted` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and Time the record was inserted',
+  `dt_updated` datetime DEFAULT NULL COMMENT 'Date and Time the records was last updated',
+  `archived` tinyint unsigned NOT NULL DEFAULT '0' COMMENT 'State if record was archived or deleted. (0-False; 1-True)',
+  `dt_archived` datetime DEFAULT NULL COMMENT 'Date and Time the record was archived. Reference date for physical archiving of records. Set to NULL on default or after record was restored.',
+  `dt_enumerated` date DEFAULT NULL,
+  `ip_label` int DEFAULT NULL,
+  PRIMARY KEY (`household_id`) USING BTREE,
+  KEY `set_grp_id` (`set_grp_id`) USING BTREE,
+  KEY `ecr_act_id` (`ecr_act_id`) USING BTREE,
+  KEY `barangay_id` (`barangay_id`) USING BTREE,
+  KEY `dt_updated` (`dt_updated`) USING BTREE,
+  KEY `idx_household_listahanan` (`listahanan_id`) USING BTREE,
+  KEY `idx_household_barangay_id` (`barangay_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='Table of Beneficiary Identification containing address, contact numbers';

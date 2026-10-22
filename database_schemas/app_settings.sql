@@ -1,0 +1,23 @@
+CREATE TABLE `app_settings` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `app_name` varchar(255) NOT NULL,
+  `app_tagline` varchar(255) DEFAULT NULL,
+  `app_subtext` varchar(500) DEFAULT NULL,
+  `app_logo_url` text,
+  `app_logo_fit` varchar(20) DEFAULT NULL,
+  `app_logo_height` int DEFAULT NULL,
+  `app_logo_sidebar_height` int DEFAULT NULL,
+  `favicon_url` text,
+  `bg_type` varchar(20) NOT NULL,
+  `bg_color` varchar(255) DEFAULT NULL,
+  `bg_image_url` text,
+  `bg_overlay_color` varchar(255) DEFAULT NULL,
+  `bg_overlay_opacity` int DEFAULT NULL,
+  `text_title_color` varchar(255) DEFAULT NULL,
+  `text_tagline_color` varchar(255) DEFAULT NULL,
+  `text_subtext_color` varchar(255) DEFAULT NULL,
+  `logos_json` text,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `ix_app_settings_id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

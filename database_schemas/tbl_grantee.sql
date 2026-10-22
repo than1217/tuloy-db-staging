@@ -1,0 +1,20 @@
+CREATE TABLE `tbl_grantee` (
+  `grantee_id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key of Grantee Table',
+  `beneficiary_id` int unsigned NOT NULL COMMENT 'Foreign Key of Household Roster.',
+  `person_id` int NOT NULL,
+  `mobile` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `email` varchar(75) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `maiden_name` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Mother''''s Maiden Name of Grantee',
+  `service_bank_id` int unsigned DEFAULT NULL COMMENT 'Foreign Key of Service Bank Table',
+  `account_no` char(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `card_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `dt_inserted` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and Time the record was inserted',
+  `dt_updated` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date and Time the records was last updated',
+  `archived` tinyint unsigned NOT NULL DEFAULT '0' COMMENT 'State if record was archived or deleted. (0-False; 1-True)',
+  `dt_archived` datetime DEFAULT NULL COMMENT 'Date and Time the record was archived. Reference date for physical archiving of records. Set to NULL on default or after record was restored.',
+  PRIMARY KEY (`grantee_id`) USING BTREE,
+  KEY `beneficiary_id` (`beneficiary_id`) USING BTREE,
+  KEY `person_id` (`person_id`) USING BTREE,
+  KEY `dt_updated` (`dt_updated`) USING BTREE,
+  KEY `idx_grantee_person_maiden` (`person_id`,`maiden_name`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='Table of Grantee';
