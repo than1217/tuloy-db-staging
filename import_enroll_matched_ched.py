@@ -5,7 +5,7 @@ into the MySQL `enroll_matched_CHED_tbl` table.
 
 Features:
 - Disables FOREIGN_KEY_CHECKS for the session so `enrollment_id = 0` can be inserted
-- Sets `mothers_maiden_first_name`, `mothers_maiden_middle_name`, `mothers_maiden_last_name` to NULL
+- Sets `mm_first_name`, `mm_middle_name`, `mm_last_name` to NULL
 - Uses `csv.reader` (index-based) to safely handle duplicate 'Region'/'REGION' headers in the CSV
 - Truncates `degree_program_name` to 150 chars by default to match `varchar(150)`
   (or pass `--widen-degree-column` to `ALTER TABLE ... MODIFY degree_program_name VARCHAR(255)`)
@@ -32,9 +32,9 @@ INSERT INTO `enroll_matched_CHED_tbl` (
     `pppp_member_id`,
     `member_id`,
     `student_id`,
-    `mothers_maiden_first_name`,
-    `mothers_maiden_middle_name`,
-    `mothers_maiden_last_name`,
+    `mm_first_name`,
+    `mm_middle_name`,
+    `mm_last_name`,
     `degree_program_name`,
     `degree_date_enrolled`,
     `degree_program_duration`,
@@ -158,9 +158,9 @@ def iter_mapped_rows(
                 pppp_member_id,     # pppp_member_id ('4ps-' + Entry_id)
                 member_id,          # member_id (Entry_id)
                 None,               # student_id
-                None,               # mothers_maiden_first_name
-                None,               # mothers_maiden_middle_name
-                None,               # mothers_maiden_last_name
+                None,               # mm_first_name
+                None,               # mm_middle_name
+                None,               # mm_last_name
                 degree_program,     # degree_program_name
                 None,               # degree_date_enrolled
                 None,               # degree_program_duration

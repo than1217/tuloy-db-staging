@@ -2,12 +2,12 @@ CREATE TABLE `enroll_matched_CHED_tbl` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `match_id` int unsigned DEFAULT NULL,
   `enrollment_id` int unsigned NOT NULL,
-  `pppp_member_id` varchar(50) DEFAULT NULL COMMENT 'Unique id across agency pre-generated from TULOY',
+  `tuloy_id` varchar(50) DEFAULT NULL COMMENT 'Unique id across agency pre-generated from TULOY',
   `member_id` int unsigned NOT NULL COMMENT 'Entry_id',
   `student_id` varchar(50) DEFAULT NULL COMMENT 'CHED/Agency student id',
-  `mothers_maiden_first_name` varchar(100) DEFAULT NULL,
-  `mothers_maiden_middle_name` varchar(100) DEFAULT NULL,
-  `mothers_maiden_last_name` varchar(100) DEFAULT NULL,
+  `mm_first_name` varchar(100) DEFAULT NULL,
+  `mm_middle_name` varchar(100) DEFAULT NULL,
+  `mm_last_name` varchar(100) DEFAULT NULL,
   `degree_program_name` varchar(150) DEFAULT NULL,
   `degree_date_enrolled` date DEFAULT NULL,
   `degree_program_duration` int DEFAULT NULL COMMENT 'E.g. IT - 4, Accounting - 5',
@@ -22,6 +22,5 @@ CREATE TABLE `enroll_matched_CHED_tbl` (
   PRIMARY KEY (`id`),
   KEY `fk_matched_enrollment` (`enrollment_id`),
   KEY `fk_matched_transaction` (`match_id`),
-  CONSTRAINT `fk_matched_enrollment` FOREIGN KEY (`enrollment_id`) REFERENCES `education_enrollment` (`enrollment_id`) ON DELETE CASCADE,
   CONSTRAINT `fk_matched_transaction` FOREIGN KEY (`match_id`) REFERENCES `matching_transaction_CHED_tbl` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
