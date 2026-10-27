@@ -5,7 +5,7 @@ into the MySQL `enroll_matched_CHED_tbl` table.
 
 Features:
 - Disables FOREIGN_KEY_CHECKS for the session so `enrollment_id = 0` can be inserted
-- Sets `mothers_maiden_first_name`, `mothers_maiden_middle_name`, `mothers_maiden_last_name` to NULL
+- Sets `mm_first_name`, `mm_middle_name`, `mm_last_name` to NULL
 - Uses `csv.reader` (index-based) to safely handle duplicate 'Region'/'REGION' headers in the CSV
 - Truncates `degree_program_name` to 150 chars by default to match `varchar(150)`
   (or pass `--widen-degree-column` to `ALTER TABLE ... MODIFY degree_program_name VARCHAR(255)`)
@@ -32,9 +32,9 @@ INSERT INTO `enroll_matched_CHED_tbl` (
     `pppp_member_id`,
     `member_id`,
     `student_id`,
-    `mothers_maiden_first_name`,
-    `mothers_maiden_middle_name`,
-    `mothers_maiden_last_name`,
+    `mm_first_name`,
+    `mm_middle_name`,
+    `mm_last_name`,
     `degree_program_name`,
     `degree_date_enrolled`,
     `degree_program_duration`,
@@ -158,9 +158,9 @@ def iter_mapped_rows(
                 pppp_member_id,     # pppp_member_id ('4ps-' + Entry_id)
                 member_id,          # member_id (Entry_id)
                 None,               # student_id
-                None,               # mothers_maiden_first_name
-                None,               # mothers_maiden_middle_name
-                None,               # mothers_maiden_last_name
+                None,               # mm_first_name
+                None,               # mm_middle_name
+                None,               # mm_last_name
                 degree_program,     # degree_program_name
                 None,               # degree_date_enrolled
                 None,               # degree_program_duration
@@ -192,6 +192,13 @@ def parse_args() -> argparse.Namespace:
         default=os.getenv("DB_DATABASE") or os.getenv("DB_NAME", ""),
         help="MySQL database name",
     )
+    
+    # SSH Tunnel arguments
+    parser.add_argument("--ssh-host", default=os.getenv("SSH_HOST", ""), help="SSH Host for tunneling")
+    parser.add_argument("--ssh-port", type=int, default=int(os.getenv("SSH_PORT", "22")), help="SSH Port")
+    parser.add_argument("--ssh-user", default=os.getenv("SSH_USER", ""), help="SSH Username")
+    parser.add_argument("--ssh-password", default=os.getenv("SSH_PASSWORD", ""), help="SSH Password")
+    parser.add_argument("--ssh-pkey", default=os.getenv("SSH_PKEY", ""), help="SSH Private Key path")
     parser.add_argument(
         "--batch-size",
         type=int,
@@ -255,67 +262,92 @@ def main() -> int:
         )
         return 1
 
-    conn = get_mysql_connection(
-        host=args.host,
-        port=args.port,
-        user=args.user,
-        password=args.password,
-        database=args.database,
-    )
+    import contextlib
 
-    cursor = conn.cursor()
-    total_inserted = 0
-    start = time.perf_counter()
+    if args.ssh_host:
+        from sshtunnel import SSHTunnelForwarder
+        tunnel_kwargs = {
+            'ssh_address_or_host': (args.ssh_host, args.ssh_port),
+            'ssh_username': args.ssh_user,
+            'remote_bind_address': (args.host, args.port)
+        }
+        if args.ssh_password:
+            tunnel_kwargs['ssh_password'] = args.ssh_password
+        if args.ssh_pkey:
+            tunnel_kwargs['ssh_pkey'] = args.ssh_pkey
+            
+        tunnel_context = SSHTunnelForwarder(**tunnel_kwargs)
+    else:
+        tunnel_context = contextlib.nullcontext()
 
-    try:
-        cursor.execute("SET FOREIGN_KEY_CHECKS = 0;")
+    with tunnel_context as tunnel:
+        db_host = args.host
+        db_port = args.port
+        if tunnel:
+            db_host = '127.0.0.1'
+            db_port = tunnel.local_bind_port
+            print(f"SSH Tunnel established on local port {db_port}.")
 
-        if args.widen_degree_column:
-            print("Altering degree_program_name column to VARCHAR(255)...")
-            cursor.execute(
-                "ALTER TABLE `enroll_matched_CHED_tbl` "
-                "MODIFY COLUMN `degree_program_name` VARCHAR(255) DEFAULT NULL;"
-            )
+        conn = get_mysql_connection(
+            host=db_host,
+            port=db_port,
+            user=args.user,
+            password=args.password,
+            database=args.database,
+        )
 
-        if args.truncate_table:
-            print("Truncating enroll_matched_CHED_tbl...")
-            cursor.execute("TRUNCATE TABLE `enroll_matched_CHED_tbl`;")
+        cursor = conn.cursor()
+        total_inserted = 0
+        start = time.perf_counter()
 
-        batch: list[tuple[Any, ...]] = []
-        for row in iter_mapped_rows(
-            args.csv_file,
-            max_degree_len=max_degree_len,
-            enrollment_status=args.enrollment_status,
-        ):
-            batch.append(row)
-            if len(batch) >= args.batch_size:
+        try:
+            cursor.execute("SET FOREIGN_KEY_CHECKS = 0;")
+
+            if args.widen_degree_column:
+                print("Altering degree_program_name column to VARCHAR(255)...")
+                cursor.execute(
+                    "ALTER TABLE `enroll_matched_CHED_tbl` "
+                    "MODIFY COLUMN `degree_program_name` VARCHAR(255) DEFAULT NULL;"
+                )
+
+            if args.truncate_table:
+                print("Truncating enroll_matched_CHED_tbl...")
+                cursor.execute("TRUNCATE TABLE `enroll_matched_CHED_tbl`;")
+
+            batch: list[tuple[Any, ...]] = []
+            for row in iter_mapped_rows(
+                args.csv_file,
+                max_degree_len=max_degree_len,
+                enrollment_status=args.enrollment_status,
+            ):
+                batch.append(row)
+                if len(batch) >= args.batch_size:
+                    cursor.executemany(INSERT_SQL, batch)
+                    conn.commit()
+                    total_inserted += len(batch)
+                    print(f"Inserted {total_inserted:,} rows...")
+                    batch.clear()
+
+            if batch:
                 cursor.executemany(INSERT_SQL, batch)
                 conn.commit()
                 total_inserted += len(batch)
-                print(f"Inserted {total_inserted:,} rows...")
                 batch.clear()
 
-        if batch:
-            cursor.executemany(INSERT_SQL, batch)
-            conn.commit()
-            total_inserted += len(batch)
-            batch.clear()
+            elapsed = time.perf_counter() - start
+            print(f"Successfully imported {total_inserted:,} rows into enroll_matched_CHED_tbl in {elapsed:.2f}s.")
+            return 0
 
-        elapsed = time.perf_counter() - start
-        print(f"Successfully imported {total_inserted:,} rows into enroll_matched_CHED_tbl in {elapsed:.2f}s.")
-        return 0
-
-    except Exception:
-        conn.rollback()
-        raise
-    finally:
-        try:
-            cursor.execute("SET FOREIGN_KEY_CHECKS = 1;")
         except Exception:
-            pass
-        cursor.close()
-        conn.close()
-
+            conn.rollback()
+            raise
+        finally:
+            try:
+                cursor.execute("SET FOREIGN_KEY_CHECKS = 1;")
+            except Exception:
+                pass
+            cursor.close()
+            conn.close()
 
 if __name__ == "__main__":
     sys.exit(main())
