@@ -1,0 +1,43 @@
+CREATE VIEW `vw_get_matched_TESDA` AS
+select
+  `m`.`id` AS `id`,
+  `m`.`match_id` AS `match_id`,
+  `m`.`enrollment_id` AS `enrollment_id`,
+  `m`.`tuloy_id` AS `tuloy_id`,
+  `m`.`member_id` AS `member_id`,
+  `m`.`uli_id` AS `uli_id`,
+  `dswd_4ps_tuloy_dev`.`vmb`.`first_name` AS `first_name`,
+  `dswd_4ps_tuloy_dev`.`vmb`.`middle_name` AS `middle_name`,
+  `dswd_4ps_tuloy_dev`.`vmb`.`last_name` AS `last_name`,
+  `m`.`mm_first_name` AS `mm_first_name`,
+  `m`.`mm_middle_name` AS `mm_middle_name`,
+  `m`.`mm_last_name` AS `mm_last_name`,
+  `dswd_4ps_tuloy_dev`.`vmb`.`region_name` AS `region_name`,
+  `dswd_4ps_tuloy_dev`.`vmb`.`province_name` AS `province_name`,
+  `dswd_4ps_tuloy_dev`.`vmb`.`city_name` AS `city_name`,
+  `dswd_4ps_tuloy_dev`.`vmb`.`barangay_name` AS `barangay_name`,
+  `m`.`diploma`->>'$.program_name' AS `diploma_program_name`,
+  `m`.`diploma`->>'$.date_enrolled' AS `diploma_date_enrolled`,
+  `m`.`diploma`->>'$.program_duration' AS `diploma_program_duration`,
+  `m`.`diploma`->>'$.academic_year' AS `diploma_academic_year`,
+  `m`.`diploma`->>'$.year_level' AS `diploma_year_level`,
+  `m`.`diploma`->>'$.semester' AS `diploma_semester`,
+  `m`.`diploma`->>'$.enrollment_status' AS `diploma_enrollment_status`,
+  `m`.`short_course`->>'$.program_name' AS `short_course_program_name`,
+  `m`.`short_course`->>'$.start_date' AS `short_course_start_date`,
+  `m`.`short_course`->>'$.end_date' AS `short_course_end_date`,
+  `m`.`short_course`->>'$.training_status' AS `short_course_training_status`,
+  `m`.`short_course`->>'$.enrollment_status' AS `short_course_enrollment_status`,
+  `m`.`date_encoded` AS `date_encoded`,
+  `m`.`date_updated` AS `date_updated`,
+  `m`.`created_at` AS `created_at`,
+  `m`.`updated_at` AS `updated_at`
+from
+  (
+    `dswd_4ps_tuloy_dev`.`enroll_matched_TESDA_tbl` `m`
+    left join `dswd_4ps_tuloy_dev`.`vw_verify_member_bene` `vmb` on(
+      (
+        `dswd_4ps_tuloy_dev`.`vmb`.`member_id` = `m`.`member_id`
+      )
+    )
+  );
