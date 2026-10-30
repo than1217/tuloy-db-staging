@@ -9,18 +9,20 @@ select
   `c`.`mm_first_name` AS `mm_first_name`,
   `c`.`mm_middle_name` AS `mm_middle_name`,
   `c`.`mm_last_name` AS `mm_last_name`,
-  'Degree' AS `course_type`,
-  `c`.`degree_program_name` AS `program_name`,
-  `c`.`degree_date_enrolled` AS `date_enrolled`,
   json_object(
-    'program_duration', `c`.`degree_program_duration`,
-    'academic_year', `c`.`degree_academic_year`,
-    'year_level', `c`.`degree_year_level`,
-    'semester', `c`.`degree_semester`
+    'degree', json_object(
+      'course_type', 'Degree',
+      'program_name', `c`.`degree_program_name`,
+      'date_enrolled', `c`.`degree_date_enrolled`,
+      'program_duration', `c`.`degree_program_duration`,
+      'academic_year', `c`.`degree_academic_year`,
+      'year_level', `c`.`degree_year_level`,
+      'semester', `c`.`degree_semester`,
+      'enrollment_status', `c`.`enrollment_status`,
+      'date_encoded', `c`.`date_encoded`,
+      'date_updated', `c`.`date_updated`
+    )
   ) AS `enrollment_details`,
-  `c`.`enrollment_status` AS `enrollment_status`,
-  `c`.`date_encoded` AS `date_encoded`,
-  `c`.`date_updated` AS `date_updated`,
   `c`.`created_at` AS `created_at`,
   `c`.`updated_at` AS `updated_at`
 from
@@ -36,26 +38,20 @@ select
   `t`.`mm_first_name` AS `mm_first_name`,
   `t`.`mm_middle_name` AS `mm_middle_name`,
   `t`.`mm_last_name` AS `mm_last_name`,
-  'Diploma' AS `course_type`,
-  json_unquote(json_extract(`t`.`diploma`, '$.program_name')) AS `program_name`,
-  cast(
-    json_unquote(json_extract(`t`.`diploma`, '$.date_enrolled')) as date
-  ) AS `date_enrolled`,
   json_object(
-    'program_duration', cast(json_unquote(json_extract(`t`.`diploma`, '$.program_duration')) as unsigned),
-    'academic_year', json_unquote(json_extract(`t`.`diploma`, '$.academic_year')),
-    'year_level', cast(json_unquote(json_extract(`t`.`diploma`, '$.year_level')) as unsigned),
-    'semester', cast(json_unquote(json_extract(`t`.`diploma`, '$.semester')) as unsigned)
+    'diploma', json_object(
+      'course_type', 'Diploma',
+      'program_name', json_unquote(json_extract(`t`.`diploma`, '$.program_name')),
+      'date_enrolled', cast(json_unquote(json_extract(`t`.`diploma`, '$.date_enrolled')) as date),
+      'program_duration', cast(json_unquote(json_extract(`t`.`diploma`, '$.program_duration')) as unsigned),
+      'academic_year', json_unquote(json_extract(`t`.`diploma`, '$.academic_year')),
+      'year_level', cast(json_unquote(json_extract(`t`.`diploma`, '$.year_level')) as unsigned),
+      'semester', cast(json_unquote(json_extract(`t`.`diploma`, '$.semester')) as unsigned),
+      'enrollment_status', json_unquote(json_extract(`t`.`diploma`, '$.enrollment_status')),
+      'date_encoded', cast(json_unquote(json_extract(`t`.`diploma`, '$.date_encoded')) as datetime),
+      'date_updated', cast(json_unquote(json_extract(`t`.`diploma`, '$.date_updated')) as datetime)
+    )
   ) AS `enrollment_details`,
-  json_unquote(
-    json_extract(`t`.`diploma`, '$.enrollment_status')
-  ) AS `enrollment_status`,
-  cast(
-    json_unquote(json_extract(`t`.`diploma`, '$.date_encoded')) as datetime
-  ) AS `date_encoded`,
-  cast(
-    json_unquote(json_extract(`t`.`diploma`, '$.date_updated')) as datetime
-  ) AS `date_updated`,
   `t`.`created_at` AS `created_at`,
   `t`.`updated_at` AS `updated_at`
 from
@@ -73,29 +69,17 @@ select
   `t`.`mm_first_name` AS `mm_first_name`,
   `t`.`mm_middle_name` AS `mm_middle_name`,
   `t`.`mm_last_name` AS `mm_last_name`,
-  'Short Course' AS `course_type`,
-  json_unquote(
-    json_extract(`t`.`short_course`, '$.program_name')
-  ) AS `program_name`,
-  cast(
-    json_unquote(json_extract(`t`.`short_course`, '$.start_date')) as date
-  ) AS `date_enrolled`,
   json_object(
-    'date_ended', cast(json_unquote(json_extract(`t`.`short_course`, '$.end_date')) as date)
+    'short_course', json_object(
+      'course_type', 'Short Course',
+      'program_name', json_unquote(json_extract(`t`.`short_course`, '$.program_name')),
+      'date_enrolled', cast(json_unquote(json_extract(`t`.`short_course`, '$.start_date')) as date),
+      'date_ended', cast(json_unquote(json_extract(`t`.`short_course`, '$.end_date')) as date),
+      'enrollment_status', json_unquote(json_extract(`t`.`short_course`, '$.training_status')),
+      'date_encoded', cast(json_unquote(json_extract(`t`.`short_course`, '$.date_encoded')) as datetime),
+      'date_updated', cast(json_unquote(json_extract(`t`.`short_course`, '$.date_updated')) as datetime)
+    )
   ) AS `enrollment_details`,
-  json_unquote(
-    json_extract(`t`.`short_course`, '$.training_status')
-  ) AS `enrollment_status`,
-  cast(
-    json_unquote(
-      json_extract(`t`.`short_course`, '$.date_encoded')
-    ) as datetime
-  ) AS `date_encoded`,
-  cast(
-    json_unquote(
-      json_extract(`t`.`short_course`, '$.date_updated')
-    ) as datetime
-  ) AS `date_updated`,
   `t`.`created_at` AS `created_at`,
   `t`.`updated_at` AS `updated_at`
 from
