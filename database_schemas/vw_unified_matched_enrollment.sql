@@ -12,9 +12,6 @@ select
   'CHED' AS `agency_name`,
   `c`.`tuloy_id` AS `tuloy_id`,
   `c`.`member_id` AS `member_id`,
-  `c`.`mm_first_name` AS `mm_first_name`,
-  `c`.`mm_middle_name` AS `mm_middle_name`,
-  `c`.`mm_last_name` AS `mm_last_name`,
   json_object(
     'degree', json_object(
       'student_id', `c`.`student_id`,
@@ -39,9 +36,6 @@ select
   'TESDA' AS `agency_name`,
   `t`.`tuloy_id` AS `tuloy_id`,
   `t`.`member_id` AS `member_id`,
-  `t`.`mm_first_name` AS `mm_first_name`,
-  `t`.`mm_middle_name` AS `mm_middle_name`,
-  `t`.`mm_last_name` AS `mm_last_name`,
   json_object(
     'diploma', json_object(
       'uli_id', `t`.`uli_id`,
@@ -68,9 +62,6 @@ select
   'TESDA' AS `agency_name`,
   `t`.`tuloy_id` AS `tuloy_id`,
   `t`.`member_id` AS `member_id`,
-  `t`.`mm_first_name` AS `mm_first_name`,
-  `t`.`mm_middle_name` AS `mm_middle_name`,
-  `t`.`mm_last_name` AS `mm_last_name`,
   json_object(
     'short_course', json_object(
       'uli_id', `t`.`uli_id`,
