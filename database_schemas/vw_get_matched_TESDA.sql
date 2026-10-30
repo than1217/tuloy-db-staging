@@ -16,20 +16,28 @@ select
   `dswd_4ps_tuloy_dev`.`vmb`.`province_name` AS `province_name`,
   `dswd_4ps_tuloy_dev`.`vmb`.`city_name` AS `city_name`,
   `dswd_4ps_tuloy_dev`.`vmb`.`barangay_name` AS `barangay_name`,
-  `m`.`diploma`->>'$.program_name' AS `diploma_program_name`,
-  `m`.`diploma`->>'$.date_enrolled' AS `diploma_date_enrolled`,
-  `m`.`diploma`->>'$.program_duration' AS `diploma_program_duration`,
-  `m`.`diploma`->>'$.academic_year' AS `diploma_academic_year`,
-  `m`.`diploma`->>'$.year_level' AS `diploma_year_level`,
-  `m`.`diploma`->>'$.semester' AS `diploma_semester`,
-  `m`.`diploma`->>'$.enrollment_status' AS `diploma_enrollment_status`,
-  `m`.`short_course`->>'$.program_name' AS `short_course_program_name`,
-  `m`.`short_course`->>'$.start_date' AS `short_course_start_date`,
-  `m`.`short_course`->>'$.end_date' AS `short_course_end_date`,
-  `m`.`short_course`->>'$.training_status' AS `short_course_training_status`,
-  `m`.`short_course`->>'$.enrollment_status' AS `short_course_enrollment_status`,
-  `m`.`date_encoded` AS `date_encoded`,
-  `m`.`date_updated` AS `date_updated`,
+  JSON_OBJECT(
+    'diploma', JSON_OBJECT(
+      'program_name', `m`.`diploma`->>'$.program_name',
+      'date_enrolled', CAST(`m`.`diploma`->>'$.date_enrolled' AS DATE),
+      'program_duration', CAST(`m`.`diploma`->>'$.program_duration' AS UNSIGNED),
+      'academic_year', `m`.`diploma`->>'$.academic_year',
+      'year_level', CAST(`m`.`diploma`->>'$.year_level' AS UNSIGNED),
+      'semester', CAST(`m`.`diploma`->>'$.semester' AS UNSIGNED),
+      'enrollment_status', `m`.`diploma`->>'$.enrollment_status',
+      'date_encoded', CAST(`m`.`diploma`->>'$.date_encoded' AS DATETIME),
+      'date_updated', CAST(`m`.`diploma`->>'$.date_updated' AS DATETIME)
+    ),
+    'short_course', JSON_OBJECT(
+      'program_name', `m`.`short_course`->>'$.program_name',
+      'start_date', CAST(`m`.`short_course`->>'$.start_date' AS DATE),
+      'end_date', CAST(`m`.`short_course`->>'$.end_date' AS DATE),
+      'training_status', `m`.`short_course`->>'$.training_status',
+      'enrollment_status', `m`.`short_course`->>'$.enrollment_status',
+      'date_encoded', CAST(`m`.`short_course`->>'$.date_encoded' AS DATETIME),
+      'date_updated', CAST(`m`.`short_course`->>'$.date_updated' AS DATETIME)
+    )
+  ) AS `enrollment_details`,
   `m`.`created_at` AS `created_at`,
   `m`.`updated_at` AS `updated_at`
 from
