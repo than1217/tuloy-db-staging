@@ -29,8 +29,7 @@ LEFT JOIN `lib_psgc_barangay` `bgy` ON `bgy`.`barangay_id` = `h`.`barangay_id`
 LEFT JOIN `lib_psgc_denorm` `psgc` ON `bgy`.`barangay_id` = `psgc`.`barangay_id`
 LEFT JOIN `lib_client_status` `cs` ON `cs`.`client_status_id` = `b`.`client_status_id`
 LEFT JOIN `lib_roster_status` `rs` ON `rs`.`roster_status_id` = `r`.`roster_status_id`
-WHERE `b`.`client_status_id` IN (1, 3, 14, 15)
-  AND `r`.`roster_status_id` = 1
+WHERE `b`.`client_status_id` IN (1, 3, 14, 15, 19, 28)
   AND `gl`.`grade_level_id` IN (13, 14, 15, 16, 22, 23, 24, 28, 29)
   AND `p`.`date_of_birth` > (CURDATE() - INTERVAL 31 YEAR)
   AND `p`.`date_of_birth` <= (CURDATE() - INTERVAL 18 YEAR);
