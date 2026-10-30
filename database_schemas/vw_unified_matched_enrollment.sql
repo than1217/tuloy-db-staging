@@ -1,16 +1,23 @@
 CREATE VIEW `vw_unified_matched_enrollment` AS
+WITH unmatched_tesda AS (
+  select `t`.* 
+  from `dswd_4ps_tuloy_dev`.`enroll_matched_TESDA_tbl` `t`
+  where not exists (
+    select 1
+    from `dswd_4ps_tuloy_dev`.`enroll_matched_CHED_tbl` `c`
+    where `c`.`tuloy_id` = `t`.`tuloy_id`
+  )
+)
 select
   'CHED' AS `agency_name`,
   `c`.`tuloy_id` AS `tuloy_id`,
-  `c`.`match_id` AS `match_id`,
-  `c`.`enrollment_id` AS `enrollment_id`,
   `c`.`member_id` AS `member_id`,
-  `c`.`student_id` AS `agency_student_uli_id`,
   `c`.`mm_first_name` AS `mm_first_name`,
   `c`.`mm_middle_name` AS `mm_middle_name`,
   `c`.`mm_last_name` AS `mm_last_name`,
   json_object(
     'degree', json_object(
+      'student_id', `c`.`student_id`,
       'course_type', 'Degree',
       'program_name', `c`.`degree_program_name`,
       'date_enrolled', `c`.`degree_date_enrolled`,
@@ -31,15 +38,13 @@ union all
 select
   'TESDA' AS `agency_name`,
   `t`.`tuloy_id` AS `tuloy_id`,
-  `t`.`match_id` AS `match_id`,
-  `t`.`enrollment_id` AS `enrollment_id`,
   `t`.`member_id` AS `member_id`,
-  `t`.`uli_id` AS `agency_student_uli_id`,
   `t`.`mm_first_name` AS `mm_first_name`,
   `t`.`mm_middle_name` AS `mm_middle_name`,
   `t`.`mm_last_name` AS `mm_last_name`,
   json_object(
     'diploma', json_object(
+      'uli_id', `t`.`uli_id`,
       'course_type', 'Diploma',
       'program_name', json_unquote(json_extract(`t`.`diploma`, '$.program_name')),
       'date_enrolled', cast(json_unquote(json_extract(`t`.`diploma`, '$.date_enrolled')) as date),
@@ -55,27 +60,20 @@ select
   `t`.`created_at` AS `created_at`,
   `t`.`updated_at` AS `updated_at`
 from
-  `dswd_4ps_tuloy_dev`.`enroll_matched_TESDA_tbl` `t`
+  `unmatched_tesda` `t`
 where
   (`t`.`diploma` is not null)
-  and not exists (
-    select 1
-    from `dswd_4ps_tuloy_dev`.`enroll_matched_CHED_tbl` `c`
-    where `c`.`tuloy_id` = `t`.`tuloy_id`
-  )
 union all
 select
   'TESDA' AS `agency_name`,
   `t`.`tuloy_id` AS `tuloy_id`,
-  `t`.`match_id` AS `match_id`,
-  `t`.`enrollment_id` AS `enrollment_id`,
   `t`.`member_id` AS `member_id`,
-  `t`.`uli_id` AS `agency_student_uli_id`,
   `t`.`mm_first_name` AS `mm_first_name`,
   `t`.`mm_middle_name` AS `mm_middle_name`,
   `t`.`mm_last_name` AS `mm_last_name`,
   json_object(
     'short_course', json_object(
+      'uli_id', `t`.`uli_id`,
       'course_type', 'Short Course',
       'program_name', json_unquote(json_extract(`t`.`short_course`, '$.program_name')),
       'date_enrolled', cast(json_unquote(json_extract(`t`.`short_course`, '$.start_date')) as date),
@@ -88,11 +86,6 @@ select
   `t`.`created_at` AS `created_at`,
   `t`.`updated_at` AS `updated_at`
 from
-  `dswd_4ps_tuloy_dev`.`enroll_matched_TESDA_tbl` `t`
+  `unmatched_tesda` `t`
 where
   (`t`.`short_course` is not null)
-  and not exists (
-    select 1
-    from `dswd_4ps_tuloy_dev`.`enroll_matched_CHED_tbl` `c`
-    where `c`.`tuloy_id` = `t`.`tuloy_id`
-  )
