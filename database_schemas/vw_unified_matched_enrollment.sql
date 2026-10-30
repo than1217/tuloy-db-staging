@@ -67,8 +67,8 @@ select
       'uli_id', `t`.`uli_id`,
       'course_type', 'Short Course',
       'program_name', json_unquote(json_extract(`t`.`short_course`, '$.program_name')),
-      'date_enrolled', cast(json_unquote(json_extract(`t`.`short_course`, '$.start_date')) as date),
-      'date_ended', cast(json_unquote(json_extract(`t`.`short_course`, '$.end_date')) as date),
+      'start_date', cast(json_unquote(json_extract(`t`.`short_course`, '$.start_date')) as date),
+      'end_date', cast(json_unquote(json_extract(`t`.`short_course`, '$.end_date')) as date),
       'enrollment_status', json_unquote(json_extract(`t`.`short_course`, '$.training_status')),
       'date_encoded', cast(json_unquote(json_extract(`t`.`short_course`, '$.date_encoded')) as datetime),
       'date_updated', cast(json_unquote(json_extract(`t`.`short_course`, '$.date_updated')) as datetime)
