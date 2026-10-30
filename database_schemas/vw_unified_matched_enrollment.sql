@@ -58,6 +58,11 @@ from
   `dswd_4ps_tuloy_dev`.`enroll_matched_TESDA_tbl` `t`
 where
   (`t`.`diploma` is not null)
+  and not exists (
+    select 1
+    from `dswd_4ps_tuloy_dev`.`enroll_matched_CHED_tbl` `c`
+    where `c`.`tuloy_id` = `t`.`tuloy_id`
+  )
 union all
 select
   'TESDA' AS `agency_name`,
@@ -86,3 +91,8 @@ from
   `dswd_4ps_tuloy_dev`.`enroll_matched_TESDA_tbl` `t`
 where
   (`t`.`short_course` is not null)
+  and not exists (
+    select 1
+    from `dswd_4ps_tuloy_dev`.`enroll_matched_CHED_tbl` `c`
+    where `c`.`tuloy_id` = `t`.`tuloy_id`
+  )
