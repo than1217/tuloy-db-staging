@@ -1,1 +1,15 @@
-CREATE ALGORITHM=UNDEFINED DEFINER=`jfiguero`@`%` SQL SECURITY DEFINER VIEW `vw_unmatched_member_bene` AS select `vw_verify_member_bene`.`first_name` AS `first_name`,`vw_verify_member_bene`.`middle_name` AS `middle_name`,`vw_verify_member_bene`.`last_name` AS `last_name`,`vw_verify_member_bene`.`date_of_birth` AS `date_of_birth`,`vw_verify_member_bene`.`sex_id` AS `sex_id`,`vw_verify_member_bene`.`member_id` AS `member_id`,`vw_verify_member_bene`.`listahanan_id` AS `listahanan_id`,`vw_verify_member_bene`.`lrn` AS `lrn`,`vw_verify_member_bene`.`philsys` AS `philsys`,`vw_verify_member_bene`.`grade_level` AS `grade_level`,`vw_verify_member_bene`.`bgy_psgc_code` AS `bgy_psgc_code`,`vw_verify_member_bene`.`region_name` AS `region_name`,`vw_verify_member_bene`.`province_name` AS `province_name`,`vw_verify_member_bene`.`city_name` AS `city_name`,`vw_verify_member_bene`.`barangay_name` AS `barangay_name`,`vw_verify_member_bene`.`client_status` AS `client_status`,`vw_verify_member_bene`.`roster_status` AS `roster_status`,`vw_verify_member_bene`.`tuloy_id` AS `tuloy_id`,`vw_verify_member_bene`.`match_keys` AS `match_keys` from `vw_verify_member_bene` where `vw_verify_member_bene`.`member_id` in (select `vw_get_matched_CHED`.`member_id` from `vw_get_matched_CHED`) is false;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vw_unmatched_member_bene` AS
+SELECT `vw_verify_member_bene`.`first_name` AS `first_name`,
+  `vw_verify_member_bene`.`middle_name` AS `middle_name`,`vw_verify_member_bene`.`last_name` AS `last_name`,
+  `vw_verify_member_bene`.`date_of_birth` AS `date_of_birth`,`vw_verify_member_bene`.`sex_id` AS `sex_id`,
+  `vw_verify_member_bene`.`member_id` AS `member_id`,`vw_verify_member_bene`.`listahanan_id` AS `listahanan_id`,
+  `vw_verify_member_bene`.`lrn` AS `lrn`,`vw_verify_member_bene`.`philsys` AS `philsys`,
+  `vw_verify_member_bene`.`grade_level` AS `grade_level`,`vw_verify_member_bene`.`bgy_psgc_code` AS `bgy_psgc_code`,
+  `vw_verify_member_bene`.`region_name` AS `region_name`,`vw_verify_member_bene`.`province_name` AS `province_name`,
+  `vw_verify_member_bene`.`city_name` AS `city_name`,`vw_verify_member_bene`.`barangay_name` AS `barangay_name`,
+  `vw_verify_member_bene`.`client_status` AS `client_status`,`vw_verify_member_bene`.`roster_status` AS `roster_status`,
+  `vw_verify_member_bene`.`tuloy_id` AS `tuloy_id`,`vw_verify_member_bene`.`match_keys` AS `match_keys`
+FROM `vw_verify_member_bene`
+WHERE `vw_verify_member_bene`.`member_id` IN
+    (SELECT `vw_get_matched_CHED`.`member_id`
+     FROM `vw_get_matched_CHED`) IS FALSE;
