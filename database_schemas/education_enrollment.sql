@@ -12,4 +12,4 @@ CREATE TABLE `education_enrollment` (
   PRIMARY KEY (`enrollment_id`),
   KEY `fk_enrollment_journey` (`tuloy_journey_id`),
   CONSTRAINT `fk_enrollment_journey` FOREIGN KEY (`tuloy_journey_id`) REFERENCES `beneficiary_journey` (`tuloy_journey_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

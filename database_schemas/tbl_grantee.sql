@@ -15,6 +15,5 @@ CREATE TABLE `tbl_grantee` (
   PRIMARY KEY (`grantee_id`) USING BTREE,
   KEY `beneficiary_id` (`beneficiary_id`) USING BTREE,
   KEY `person_id` (`person_id`) USING BTREE,
-  KEY `dt_updated` (`dt_updated`) USING BTREE,
-  KEY `idx_grantee_person_maiden` (`person_id`,`maiden_name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='Table of Grantee';
+  KEY `dt_updated` (`dt_updated`)
+) ENGINE=InnoDB AUTO_INCREMENT=30628551 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='Table of Grantee';

@@ -5,7 +5,7 @@ CREATE TABLE `tbl_beneficiary` (
   `client_status_id` int unsigned NOT NULL COMMENT 'Foreign Key of Client Status Library',
   `registered` tinyint(1) NOT NULL DEFAULT '2' COMMENT 'State if the beneficiary has registered. (2-False; 1-True)',
   `d_reg` date DEFAULT NULL COMMENT 'Date of Registration',
-  `payment_mode_id` int unsigned DEFAULT NULL,
+  `payment_mode_id` int unsigned DEFAULT '5',
   `ecr_act_id` int unsigned DEFAULT NULL,
   `dt_inserted` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and Time the record was inserted',
   `dt_updated` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date and Time the records was last updated',
@@ -15,6 +15,6 @@ CREATE TABLE `tbl_beneficiary` (
   KEY `client_status_id` (`client_status_id`) USING BTREE,
   KEY `payment_mode_id` (`payment_mode_id`) USING BTREE,
   KEY `ecr_act_id` (`ecr_act_id`) USING BTREE,
-  KEY `dt_updated` (`dt_updated`) USING BTREE,
-  KEY `idx_household_id` (`household_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='Table of Beneficiary';
+  KEY `dt_updated` (`dt_updated`),
+  KEY `idx_beneficiary_hh_client_status` (`household_id`,`client_status_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=30498198 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='Table of Beneficiary';

@@ -19,4 +19,4 @@ CREATE TABLE `enrollment_history_tbl` (
   KEY `ix_enrollment_history_tbl_member_id` (`member_id`),
   KEY `ix_enrollment_history_tbl_last_name` (`last_name`),
   CONSTRAINT `enrollment_history_tbl_ibfk_1` FOREIGN KEY (`beneficiary_id`) REFERENCES `tuloy_beneficiary_tbl` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=301 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

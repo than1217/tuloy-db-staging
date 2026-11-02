@@ -1,5 +1,5 @@
 CREATE TABLE `tbl_household` (
-  `household_id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key of Household Table',
+  `household_id` int NOT NULL AUTO_INCREMENT COMMENT 'Primary Key of Household Table',
   `listahanan_id` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Listahanan ID or hh_id from Listahanan Project.',
   `address` varchar(175) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Address of Household. Unit Number/Floor/Building/House Number/Block/Lot/Street/Sitio/Purok.',
   `barangay_id` int NOT NULL COMMENT 'Foreign Key to Barangay Library.',
@@ -16,7 +16,6 @@ CREATE TABLE `tbl_household` (
   KEY `set_grp_id` (`set_grp_id`) USING BTREE,
   KEY `ecr_act_id` (`ecr_act_id`) USING BTREE,
   KEY `barangay_id` (`barangay_id`) USING BTREE,
-  KEY `dt_updated` (`dt_updated`) USING BTREE,
-  KEY `idx_household_listahanan` (`listahanan_id`) USING BTREE,
-  KEY `idx_household_barangay_id` (`barangay_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='Table of Beneficiary Identification containing address, contact numbers';
+  KEY `dt_updated` (`dt_updated`),
+  KEY `idx_listahanan_id` (`listahanan_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=30498198 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='Table of Beneficiary Identification containing address, contact numbers';

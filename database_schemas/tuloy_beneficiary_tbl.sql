@@ -54,4 +54,4 @@ CREATE TABLE `tuloy_beneficiary_tbl` (
   CONSTRAINT `tuloy_beneficiary_tbl_ibfk_3` FOREIGN KEY (`dependent_solo_parent_id`) REFERENCES `dependent_tbl` (`id`),
   CONSTRAINT `tuloy_beneficiary_tbl_ibfk_4` FOREIGN KEY (`first_gen_college_id`) REFERENCES `generation_college_tbl` (`id`),
   CONSTRAINT `tuloy_beneficiary_tbl_ibfk_5` FOREIGN KEY (`enrollment_status_id`) REFERENCES `enrollment_status_tbl` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

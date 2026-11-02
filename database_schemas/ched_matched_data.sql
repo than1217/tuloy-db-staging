@@ -1,0 +1,22 @@
+CREATE TABLE `ched_matched_data` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `transaction_id` int DEFAULT NULL,
+  `tuloy_id` varchar(255) DEFAULT NULL,
+  `member_id` bigint DEFAULT NULL,
+  `student_id` bigint DEFAULT NULL,
+  `mmn_first_name` varchar(255) DEFAULT NULL,
+  `mmn_middle_name` varchar(255) DEFAULT NULL,
+  `mmn_last_name` varchar(255) DEFAULT NULL,
+  `program_name` varchar(255) DEFAULT NULL,
+  `date_enrolled` varchar(255) DEFAULT NULL,
+  `program_duration` int DEFAULT NULL,
+  `academic_year` varchar(50) DEFAULT NULL,
+  `year_level` int DEFAULT NULL,
+  `semester` int DEFAULT NULL,
+  `enrollment_status` varchar(100) DEFAULT NULL,
+  `date_encoded` varchar(255) DEFAULT NULL,
+  `date_updated` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `transaction_id` (`transaction_id`),
+  CONSTRAINT `ched_matched_data_ibfk_1` FOREIGN KEY (`transaction_id`) REFERENCES `ched_transaction_status` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

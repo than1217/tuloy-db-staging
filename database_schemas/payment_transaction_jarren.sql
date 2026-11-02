@@ -20,4 +20,4 @@ CREATE TABLE `payment_transaction_jarren` (
   KEY `status` (`status`),
   KEY `payment_mode_id` (`payment_mode_id`),
   CONSTRAINT `payment_transaction_jarren_ibfk_1` FOREIGN KEY (`tuloy_journey_id`) REFERENCES `beneficiary_journey` (`tuloy_journey_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

@@ -1,0 +1,20 @@
+CREATE TABLE `api_user_scopes` (
+  `grant_id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `scope` varchar(64) NOT NULL,
+  `partner_id` varchar(64) NOT NULL,
+  `agency` varchar(16) NOT NULL,
+  `granted_by` varchar(255) NOT NULL,
+  `granted_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `revoked_at` timestamp NULL DEFAULT NULL,
+  `revoked_by` varchar(255) DEFAULT NULL,
+  `is_active` tinyint GENERATED ALWAYS AS (if((`revoked_at` is null),1,NULL)) STORED,
+  PRIMARY KEY (`grant_id`),
+  UNIQUE KEY `uq_api_user_scopes_active` (`user_id`,`scope`,`partner_id`,`agency`,`is_active`),
+  KEY `ix_api_user_scopes_lookup` (`user_id`,`revoked_at`,`expires_at`),
+  CONSTRAINT `fk_api_user_scopes_user` FOREIGN KEY (`user_id`) REFERENCES `api_users` (`id`) ON DELETE RESTRICT,
+  CONSTRAINT `ck_api_user_scopes_expiry` CHECK (((`expires_at` is null) or (`expires_at` > `granted_at`))),
+  CONSTRAINT `ck_api_user_scopes_fields` CHECK (((`scope` <> _utf8mb4'') and (`partner_id` <> _utf8mb4'') and (`agency` <> _utf8mb4'') and (`granted_by` <> _utf8mb4''))),
+  CONSTRAINT `ck_api_user_scopes_revoker` CHECK (((`revoked_at` is null) = (`revoked_by` is null)))
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

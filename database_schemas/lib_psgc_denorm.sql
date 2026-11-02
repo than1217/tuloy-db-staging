@@ -1,0 +1,23 @@
+CREATE TABLE `lib_psgc_denorm` (
+  `region_id` int unsigned DEFAULT NULL COMMENT 'Region ID: Primary Key of Region Library. {"label":"Region ID","visible":"false","searchable":"false","formtag":"hidden","list":"1","view":"0","add_edit":"1","alias":"id"}',
+  `region_name` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Name: Name of Region. {"label":"Name","visible":"true","searchable":"true","formtag":"text","rules":"required|regex_match[/^[a-zA-Z0-9 ñÑ().''-_]+$/]","list":"1","view":"1","add_edit":"1","alias":"name"}',
+  `short_code` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Code: Code of Region. {"label":"Code","visible":"true","searchable":"true","formtag":"text","rules":"min_length[2]|regex_match[/^[a-zA-Z0-9 ()''-_]+$/]","list":"1","view":"1","add_edit":"1","alias":"code"}',
+  `region_psa_code` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'PSA Code: Philippine Standard Authority Code. {"label":"PSA Code","visible":"true","searchable":"true","formtag":"text","rules":"required|exact_length[10]|numeric","list":"1","view":"1","add_edit":"1"}',
+  `province_id` int unsigned DEFAULT NULL COMMENT 'Province ID: Primary Key of Province Library. {"label":"Province ID","visible":"false","searchable":"false","formtag":"hidden","list":"1","view":"0","add_edit":"1","alias":"id"}',
+  `province_name` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Name: Name of Province. {"label":"Name","visible":"true","searchable":"true","formtag":"text","rules":"required|regex_match[/^[a-zA-Z0-9 ñÑ().''-_]+$/]","list":"1","view":"1","add_edit":"1","alias":"name"}',
+  `province_psa_code` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'PSA Code: Philippine Standard Authority Code. {"label":"PSA Code","visible":"true","searchable":"true","formtag":"text","rules":"required|exact_length[10]|numeric","list":"1","view":"1","add_edit":"1"}',
+  `city_id` int unsigned DEFAULT NULL COMMENT 'City Municipality ID: Primary Key of City Municipality Library. {"label":"City Municipality ID","visible":"false","searchable":"false","formtag":"hidden","list":"1","view":"0","add_edit":"1","alias":"id"}',
+  `city_name` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Name: Name of City Municipality. {"label":"Name","visible":"true","searchable":"true","formtag":"text","rules":"required|regex_match[/^[a-zA-Z0-9 ñÑ().''-_]+$/]","list":"1","view":"1","add_edit":"1","alias":"name"}',
+  `city_psa_name` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'PSA Code: Philippine Standard Authority Code. {"label":"PSA Code","visible":"true","searchable":"true","formtag":"text","rules":"required|exact_length[10]|numeric","list":"1","view":"1","add_edit":"1"}',
+  `barangay_id` int unsigned NOT NULL DEFAULT '0' COMMENT 'Barangay ID: Primary Key of Barangay Library. {"label":"Barangay ID","visible":"false","searchable":"false","formtag":"hidden","list":"1","view":"0","add_edit":"1","alias":"id"}',
+  `brgy_name` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Name: Name of Barangay. {"label":"Name","visible":"true","searchable":"true","formtag":"text","rules":"required|regex_match[/^[a-zA-Z0-9 ñÑ().''-_]+$/]","list":"1","view":"1","add_edit":"1","alias":"name"}',
+  `code` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Code: Code of Barangay. {"label":"Code","visible":"true","searchable":"true","formtag":"text","rules":"min_length[2]|regex_match[/^[a-zA-Z0-9 ()''-_]+$/]","list":"1","view":"1","add_edit":"1","alias":"code"}',
+  `geocode` char(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Geocode: Philippine Standard Geographic Code. {"label":"GeoCode","visible":"true","searchable":"true","formtag":"text","rules":"exact_length[9]|numeric","list":"1","view":"1","add_edit":"1"}',
+  `brgy_psa_code` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'PSA Code: Philippine Standard Authority Code. {"label":"PSA Code","visible":"true","searchable":"true","formtag":"text","rules":"required|exact_length[10]|numeric","list":"1","view":"1","add_edit":"1"}',
+  `join_key` varchar(503) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  KEY `join_key` (`join_key`),
+  KEY `region id` (`region_id`),
+  KEY `province id` (`province_id`),
+  KEY `city_id` (`city_id`),
+  KEY `barangay_id` (`barangay_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;

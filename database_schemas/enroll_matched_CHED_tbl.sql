@@ -19,8 +19,12 @@ CREATE TABLE `enroll_matched_CHED_tbl` (
   `date_updated` datetime DEFAULT NULL COMMENT 'When the record updated to their system',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `agency_id` int unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_matched_enrollment` (`enrollment_id`),
   KEY `fk_matched_transaction` (`match_id`),
+  KEY `idx_member_id` (`member_id`),
+  KEY `idx_enroll_ched_tuloy` (`tuloy_id`,`agency_id`,`match_id`,`member_id`),
+  KEY `idx_enroll_matched_tuloy_id` (`tuloy_id`),
   CONSTRAINT `fk_matched_transaction` FOREIGN KEY (`match_id`) REFERENCES `matching_transaction_CHED_tbl` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=102347 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
